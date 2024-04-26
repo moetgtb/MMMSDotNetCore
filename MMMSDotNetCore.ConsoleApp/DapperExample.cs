@@ -17,6 +17,9 @@ namespace MMMSDotNetCore.ConsoleApp
             edit(1);
             edit(200);
             create( "Hi", "HIII", "Heee");
+            update(5, "HLA HlA", "Come Back", "Waiting For You");
+
+            delete (5);
         }
         private void read()
         {
@@ -73,6 +76,46 @@ namespace MMMSDotNetCore.ConsoleApp
             using IDbConnection db = new SqlConnection(ConnectionString.sqlConnectionStringBuilder.ConnectionString);
             int result = db.Execute(query, item);
             string message = result > 0 ? " Data inserting successful" : "Inserted fail";
+            Console.WriteLine(message);
+
+        }
+
+        private void update(int id , string title, string author, string content)
+        {
+            var item = new BlogDto
+            {
+                Blogid = id,
+                BlogTitle = title,
+                BlogAuthor = author,
+                BlogContent = content,
+            };
+            string query = @"UPDATE  [dbo].[Tbl_Blogs] SET
+           [BlogTitle] =@BlogTitle,
+           [BlogAuthor]=@BlogAuthor,
+           [BlogContent]=@BlogContent
+           Where BlogID=@Blogid";
+          
+
+            using IDbConnection db = new SqlConnection(ConnectionString.sqlConnectionStringBuilder.ConnectionString);
+            int result = db.Execute(query, item);
+            string message = result > 0 ? " Data updating  successful" : "updated fail";
+            Console.WriteLine(message);
+
+        }
+
+        private void delete (int id)
+        {
+            var item = new BlogDto
+            {
+                Blogid = id
+            };
+            string query = @"DELETE FROM [dbo].[Tbl_Blogs]
+            WHERE BlogId=@BlogId";
+
+
+            using IDbConnection db = new SqlConnection(ConnectionString.sqlConnectionStringBuilder.ConnectionString);
+            int result = db.Execute(query, item);
+            string message = result > 0 ? " Data delete  successful" : "deleted fail";
             Console.WriteLine(message);
 
         }
